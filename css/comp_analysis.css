@@ -1,0 +1,160 @@
+caption{
+	font-size: 1.2em;
+}
+
+table.empSals{
+	margin-top:10px;
+}
+
+table.empSals td.quartile-cell{
+	text-align:center;
+	font-weight:bold;
+	padding-top:0;
+	padding-bottom:0;
+	background-color:#DDD;
+}
+
+.center{
+	text-align:center;
+}
+
+tr.quart-labels td{
+	text-align:center;
+	border-top:1px solid black;
+}
+
+td.cell-6:first-of-type, td.cell-6:last-of-type{
+	border:none;
+}
+
+td.bord-top{
+	border-top:1px solid black;
+}
+
+td.bord-left{
+	border-left:1px solid black;
+}
+
+td.bord-right{
+	border-right:1px solid black;
+}
+
+td.divider{
+	border-right:1px solid black;
+}
+
+.align-left{
+	text-align:left;
+}
+
+.align-center{
+	text-align:center;
+}
+
+.align-right{
+	text-align:right;
+}
+
+form#extMarketRatio input[type=text]{
+	border:none;
+}
+
+table#extMarketRatio th{
+	text-align:center;
+	border-left:1px solid #aaa;
+	border-top:1px solid #aaa;
+	border-right:1px solid #aaa;
+	padding:4px;
+}
+
+table#extMarketRatio tr:nth-of-type(odd) input[type=text]{
+	background-color: #f9f9f9;
+}
+	
+table#extMarketRatio td:first-child input[type=text]{
+	width:120px
+}
+
+table#extMarketRatio td input[type=text]{
+	width:80px
+}
+
+table#extMarketRatio td{
+	border:1px solid #ddd;
+	padding:4px;
+}
+
+table#extMarketRatio tr:first-child td{
+	border-top:2px solid #aaa;
+}
+
+table#extMarketRatio tr:last-child td{
+	border-bottom:1px solid #aaa;
+	border-top:3px double #aaa;
+}
+
+table#extMarketRatio td:first-child{
+	border-left:1px solid #aaa;
+}
+
+table#extMarketRatio td:last-child{
+	border-right:1px solid #aaa;
+}
+
+td.aggregate-cell{
+	text-align:center;
+}
+
+.cell-4{
+	min-width:120px;
+}
+
+.outWrapper{
+	width:480px; /* (4 * [cell-4_width]) */
+	height:100px;
+	margin-bottom:60px;
+}
+
+.inWrapper{
+	width:100%;
+	height:100%;
+	position:relative;
+}
+
+table.quartiles{
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0px;
+	left:0px;
+	table-layout:fixed; /* prevents table from expanding beyond container */
+}
+
+.canvasOverlay{
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:21px;
+	left:0px;
+	/*background-color:rgba(0,255,0,.1);*/
+}
+
+.quartiles td{
+}
+
+.quartiles caption{
+	font-weight:bold;
+	margin-bottom:0;
+}
+
+.myCaption{
+	color:#777;
+	font-weight:bold;
+	font-size:1.2em;
+	cursor:pointer;
+}
+
+.marketRatio{
+	color:#444;
+}
+
