@@ -134,26 +134,31 @@
 					name="workDept_filter"
 					class="form-control input-sm"
 					>
-					<?php
-						// Create blank option
-						echo '<option ';
+					
+					<!-- Create blank option -->
+					<option
+						<?php
 							if (!isset($_GET['deptID'])){
 								echo 'selected="selected" ';
 							}
-							echo 'value="none"';
-							echo '>&nbsp;';
-						echo '</option>';
+						?>
+						value="none"
+						>&nbsp;
+					</option>
 
-						// Create "All" option
-						echo '<option ';
+					<!-- Create "All" option -->
+					<option
+						<?php
 							if (isset($_GET['deptID']) AND $_GET['deptID'] == "all"){
 								echo 'selected="selected" ';
 							}
-							echo 'value="all"';
-							echo '>All';
-						echo '</option>';
+						?>
+						value="all"
+						>All
+					</option>
 
-						// Create options for each department
+					<!-- Create options for each department -->
+					<?php
 						while ($row = $all_depts->fetch_assoc()){
 							echo '<option ';
 
@@ -167,7 +172,6 @@
 							echo '</option>';
 						}
 					?>
-					
 				</select>
 			</div>
 
@@ -180,26 +184,30 @@
 					class="form-control input-sm"
 					>
 
-					<?php
-						// Create blank option
-						echo '<option ';
+					<!-- Create blank option -->
+					<option
+						<?php
 							if (!isset($_GET['pl'])){
 								echo 'selected="selected" ';
 							}
-							echo 'value="none"';
-							echo '>&nbsp;';
-						echo '</option>';
+						?>
+						value="none"
+						>&nbsp;
+					</option>
 
-						// Create "All" option
-						echo '<option ';
+					<!-- Create "All" option -->
+					<option
+						<?php
 							if (isset($_GET['pl']) AND $_GET['pl'] == "all"){
 								echo 'selected="selected" ';
 							}
-							echo 'value="all"';
-							echo '>All';
-						echo '</option>';	
+						?>
+						value="all"
+						>All
+					</option>
 
-						// Create options for all pay levels
+					<!-- Create options for all pay levels -->
+					<?php
 						for ($i = 10; $i <= 19; $i++){
 							echo '<option ';
 
@@ -212,7 +220,7 @@
 								echo $i;
 							echo '</option>';
 						}
-					?>			
+					?>
 				</select>
 			</div>
 
@@ -225,26 +233,31 @@
 					class="form-control input-sm"
 					>
 
-					<?php
-						// Create blank option
-						echo '<option ';
+				
+					<!-- Create blank option -->
+					<option
+						<?php
 							if (!isset($_GET['jf'])){
 								echo 'selected="selected" ';
 							}
-							echo 'value="none"';
-							echo '>&nbsp;';
-						echo '</option>';
+						?>
+						value="none"
+						>&nbsp;
+					</option>
 
-						// Create "All" option
-						echo '<option ';
+					<!-- Create "All" option -->
+					<option
+						<?php
 							if (isset($_GET['jf']) AND $_GET['jf'] == "all"){
 								echo 'selected="selected" ';
 							}
-							echo 'value="all"';
-							echo '>All';
-						echo '</option>';
+						?>
+						value="all"
+						>All
+					</option>
 
-						// Create options for all job families
+					<!-- Create options for all job families -->
+					<?php
 						while ($row = $jobFamilies->fetch_assoc()){
 							echo '<option ';
 
@@ -257,8 +270,7 @@
 								echo $row['JobFamily_long'];
 							echo '</option>';
 						}
-					?>			
-					
+					?>
 				</select>
 			</div>
 
@@ -298,19 +310,21 @@
 
 							$jobFamilies->data_seek(0); // Move result set iterator back to start
 							while ($row = $jobFamilies->fetch_assoc()){
-								echo '<th class="jobFamily">' .
-								 	'<a ' .
-								 		'role="button" ' .
-								 		'tabindex="0" ' .
-								 		'data-toggle="popover" ' .
-								 		'data-trigger="focus" ' .
-								 		'data-placement="bottom" ' .
-								 		'title="' . $row['JobFamily_long'] . '" ' .
-								 		'data-content="' . $row['Descr'] . '" ' .
-								 		'>' .
-								 		$row['JobFamily_long'] .
-								 	'</a>' .
-								'</th>';
+						?>
+							<th class="jobFamily">
+							 	<a
+							 		role="button"
+							 		tabindex="0"
+							 		data-toggle="popover"
+							 		data-trigger="focus"
+							 		data-placement="bottom"
+							 		title="<?php echo $row['JobFamily_long']; ?>"
+							 		data-content="<?php echo $row['Descr']; ?>"
+							 		>
+							 		<?php echo $row['JobFamily_long']; ?>
+							 	</a>
+							</th>
+						<?php
 							}
 						?>
 					</tr>
@@ -340,21 +354,22 @@
 
 						// Classification Matrix
 						foreach ($class_matrix as $payLevel => $jobs){
-							echo '<tr>';
-								echo '<td class="payLevel">' .
-									 	'<a ' .
-									 		'role="button" ' .
-									 		'tabindex="0" ' .
-									 		'data-toggle="popover" ' .
-									 		'data-trigger="focus" ' .
-									 		'data-placement="right" ' .
-									 		'title="Pay Level ' . $payLevel . '" ' .
-									 		'data-content="' /*. $payLevelDescr_array[$payLevel]*/ . '" ' .
-									 		'>' .
-									 		$payLevel .
-									 	'</a>' .
-									 '</td>';
-
+					?>
+							<tr>
+								<td class="payLevel">
+								 	<a
+								 		role="button"
+								 		tabindex="0"
+								 		data-toggle="popover"
+								 		data-trigger="focus"
+								 		data-placement="right"
+								 		title="Pay Level <?php echo $payLevel; ?>"
+								 		data-content="<?php /*echo $payLevelDescr_array[$payLevel];*/ ?>"
+								 		>
+								 		<?php echo $payLevel; ?>
+								 	</a>
+								</td>
+					<?php
 								$jobFam_i = 1; // Iterator to tell which job family we are on.
 								foreach ($jobs as $jobCodeCount){
 
@@ -378,6 +393,7 @@
 
 									$jobFam_i++;
 								}
+							echo '</tr>';
 						}
 
 					?>
