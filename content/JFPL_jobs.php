@@ -21,7 +21,7 @@
 		// Select all distinct DeptIDs
 		$sql = "
 			SELECT DISTINCT WorkingDept
-			FROM $allActives_table
+			FROM all_active_fac_staff
 			WHERE DeptID = " . $_GET['deptID'] . "
 			";
 
@@ -36,8 +36,8 @@
 	// Get job codes that fit criteria
 	$sql = "
 		SELECT DISTINCT a.JobCode, a.JobTitle
-		FROM $allActives_table AS a
-		LEFT JOIN $payLevels_table AS p
+		FROM all_active_fac_staff AS a
+		LEFT JOIN pay_levels AS p
 		ON LPAD(a.JobCode, 4, '0') = LPAD(p.JobCode, 4, '0')
 		WHERE 1=1 /* to allow additional where clauses to be ANDed on */";
 
@@ -63,7 +63,7 @@
 	// Get Job Family
 	$sql = "
 		SELECT *
-		FROM " . $jobFamilies_table . "
+		FROM job_families
 		WHERE JobFamily_short = '" . $_GET['jf'] . "'
 	";
 	if (!$qry_jobFamily = $conn->query($sql)){
@@ -139,7 +139,7 @@
 						// Get Min and Max
 						$sql = "
 							SELECT MIN(Annual_Rt) AS minSal, MAX(Annual_Rt) AS maxSal
-							FROM $allActives_table
+							FROM all_active_fac_staff
 							WHERE JobCode = '" . $row['JobCode']  . "'
 							";
 						// Run query
@@ -173,7 +173,7 @@
 							// Get Min and Max
 							$sql = "
 								SELECT MIN(Annual_Rt) AS minSal, MAX(Annual_Rt) AS maxSal
-								FROM $allActives_table
+								FROM all_active_fac_staff
 								WHERE JobCode = '$jobCode'
 								";
 							// Run query

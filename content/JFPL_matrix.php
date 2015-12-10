@@ -36,8 +36,8 @@
 		SELECT sub.PayLevel, sub.JobFamily, COUNT(sub.jobCode) AS jobCodeCount
 		FROM (
 			SELECT DISTINCT a.jobCode, p.PayLevel, p.JobFamily
-			FROM $allActives_table AS a
-			LEFT JOIN $payLevels_table AS p
+			FROM all_active_fac_staff AS a
+			LEFT JOIN pay_levels AS p
 			ON LPAD(a.JobCode, 4, '0') = LPAD(p.JobCode, 4, '0')
 			WHERE 1=1 /* to allow additional where clauses to be ANDed on */";
 
@@ -92,7 +92,7 @@
 	// Select all distinct DeptIDs
 	$sql = "
 		SELECT DISTINCT DeptID, WorkingDept
-		FROM $allActives_table
+		FROM all_active_fac_staff
 		ORDER BY WorkingDept ASC
 		";
 
@@ -106,7 +106,7 @@
 	// Select all job families
 	$sql = "
 		SELECT *
-		FROM $jobFamilies_table
+		FROM job_families
 		";
 
 	// Run query
@@ -116,7 +116,9 @@
 
 ?>
 
-<div class="container">
+<div class="container-fluid">
+	
+	<!-- Filters -->
 	<div class="row" style="margin-top:10px;">
 		<form
 			id="filters"
@@ -296,8 +298,10 @@
 
 		</form>
 	</div>
+	<!-- End Filters -->
 	
-
+	
+	<!-- Matrix -->
 	<div class="row">
 		<div class="col-xs-12">
 
@@ -401,6 +405,8 @@
 			</table>
 		</div>
 	</div>
+	<!-- End Matrix -->
+
 </div>
 
 <?php

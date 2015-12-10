@@ -16,7 +16,7 @@
 	// Select all employees with the specified job code
 	$sql = "
 		SELECT *
-		FROM $allActives_table
+		FROM all_active_fac_staff
 		WHERE JobCode = '4206'
 		ORDER BY Annual_Rt ASC
 		";
@@ -39,7 +39,7 @@
 	// Select all employees with the specified job code and DeptID
 	$sql = "
 		SELECT Annual_Rt
-		FROM $allActives_table
+		FROM all_active_fac_staff
 		WHERE JobCode = '4206' AND
 			DeptID = 45001
 		ORDER BY Annual_Rt ASC
