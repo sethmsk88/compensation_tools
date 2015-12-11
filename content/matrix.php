@@ -5,7 +5,7 @@
 	<div class="row-fluid">
 
 		<!-- Sidebar content -->
-		<div class="col-xs-2 c1">
+		<div class="col-xs-1 c1">
 			<form
 				name="filters-form"
 				role="form"
@@ -14,12 +14,12 @@
 				<ul class="list-unstyled">
 					<li>
 						Pay Level
-						<span class="glyphicon glyphicon-triangle-bottom"></span>
+						<span class="expand-collapse glyphicon glyphicon-triangle-bottom"></span>
 						<ul>
 							<li>
 								<input type="checkbox" id="">
 								All
-								<span class="glyphicon glyphicon-triangle-bottom"></span>
+								<span class="expand-collapse glyphicon glyphicon-triangle-bottom"></span>
 								<ul>
 									<?php
 										for ($i=10; $i<=19; $i++) {
@@ -40,7 +40,7 @@
 		</div>
 
 		<!-- Body Content -->
-		<div class="col-xs-10 c2">
+		<div class="col-xs-11 c2">
 			Test 2
 		</div>
 	</div>
