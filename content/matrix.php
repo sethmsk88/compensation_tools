@@ -12,7 +12,7 @@
 	 */
 	function createCheckboxFilter($filterName, $filterID, $options_array) {
 ?>
-		<ul class="list-unstyled">
+		<ul class="filter-group list-unstyled">
 			<li>
 				<?php echo $filterName; ?>
 				<span class="expand-collapse glyphicon glyphicon-triangle-bottom"></span>
@@ -26,8 +26,12 @@
 						foreach ($options_array as $option) {
 					?>
 							<li>
-								<input type="checkbox" id="">
-								<label for=""><?php echo $option; ?></label>
+								<div class="filter-option">
+									<input type="checkbox" id="">
+									<span class="option-label">
+										<?php echo $option; ?>
+									</span>
+								</div>
 							</li>
 					<?php
 						}
@@ -91,27 +95,102 @@
 		echo "Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error;
 	}
 
-	/* Get Pay Plans */
-	$sql_select_payPlans = "
+	/*
+		Get All Pay Plans
+	*/
+	$sql_sel_all_payPlans = "
 		SELECT DISTINCT PayPlan
 		FROM class_specs
 	";
-	$qry_select_payPlans = $conn->query($sql_select_payPlans);
+	$res_sel_all_payPlans = $conn->query($sql_sel_all_payPlans);
 
-	/* Get Pay Levels */
-	$sql_select_payLevels = "
+	/*
+		Get All Pay Levels
+	*/
+	$sql_sel_all_payLevels = "
 		SELECT DISTINCT PayLevel
 		FROM pay_levels
+		WHERE PayLevel IS NOT NULL
 	";
-	$qry_select_payLevels = $conn->query($sql_select_payLevels);
+	$res_sel_all_payLevels = $conn->query($sql_sel_all_payLevels);
 
-	/* Get Job Families */
-	$sql_select_jobFamilies = "
+	/*
+		Get All Job Families
+	*/
+	$sql_sel_all_jobFamilies = "
 		SELECT *
 		FROM job_families
 	";
-	$qry_select_jobFamilies = $conn->query($sql_select_jobFamilies);
+	$res_sel_all_jobFamilies = $conn->query($sql_sel_all_jobFamilies);
 
+	/*
+		Get Filtered Job Families
+	*/
+	$sql_sel_filt_jobFamilies = "
+		SELECT *
+		FROM job_families
+		WHERE ID > 0 AND	/* TESTING */
+			ID < 6			/* TESTING */
+	";
+	$res_sel_filt_jobFamilies = $conn->query($sql_sel_filt_jobFamilies);
+
+	/*
+		Get the number of distinct job codes for each (PayLevel x JobFamily) pair
+	*/
+	$sql_sel_jobCodeCount = "
+		SELECT sub.PayLevel, sub.JobFamilyID, COUNT(sub.jobCode) AS JobCodeCount
+		FROM (
+			SELECT DISTINCT a.jobCode, p.PayLevel, j.ID AS JobFamilyID
+			FROM all_active_fac_staff AS a
+			LEFT JOIN pay_levels AS p
+			ON LPAD(a.JobCode, 4, '0') = LPAD(p.JobCode, 4, '0')
+			JOIN job_families AS j
+			ON j.JobFamily_short = p.JobFamily
+			WHERE p.PayLevel IS NOT NULL AND
+				p.PayLevel > 10 AND			/* TESTING */
+				p.PayLevel < 15				/* TESTING */
+			ORDER BY p.PayLevel, p.JobFamily) AS sub
+		GROUP BY sub.JobFamilyID, sub.PayLevel
+		ORDER BY sub.PayLevel, sub.JobFamilyID
+	";
+	if (!($res_sel_jobCodeCount = $conn->query($sql_sel_jobCodeCount))){
+		echo "Query failed: (" . $conn->errno . ") " . $conn->error;
+	}
+
+	/*
+		Create arrays from query results
+	*/
+	$payPlan_array = getColArrayFromQuery($res_sel_all_payPlans, "PayPlan");
+	$payLevel_array = getColArrayFromQuery($res_sel_all_payLevels, "PayLevel");
+	$jobFamily_array = getKeyValArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long");
+	$filtered_jobFamily_array = getKeyValArrayFromQuery($res_sel_filt_jobFamilies, "ID", "JobFamily_long");
+
+	/*
+		TODO: This should be populated with filter selections
+	*/
+	$filtered_payLevel_array = array(11,12,13,14);
+
+	/*
+		Create lookup table to populate matrix table
+	*/
+	$lookup_table = array();
+	foreach ($payLevel_array as $payLevel) {
+		$lookup_table[$payLevel] = array();
+
+		// Initialize job counts for each (payLevel x jobFamily)
+		for ($i=0; $i < count($jobFamily_array); $i++) {
+			$lookup_table[$payLevel][$i] = 0; // initialize
+		}
+	}
+
+	/* Populate lookup table */
+	while ($row = $res_sel_jobCodeCount->fetch_assoc()) {
+		$row_i = $row['PayLevel'];
+		$col_i = $row['JobFamilyID'] - 1;
+		$lookup_table[$row_i][$col_i] = $row['JobCodeCount'];
+	}
+	$res_sel_jobCodeCount->data_seek(0); // Move result set iterator back to start
+	dumpQuery($res_sel_jobCodeCount);
 ?>
 
 
@@ -119,20 +198,13 @@
 	<div class="row-fluid">
 
 		<!-- Sidebar content -->
-		<div class="col-xs-2 c1">
+		<div class="sidebar col-md-2">
 			<form
 				name="filters-form"
 				role="form"
 				action=""
 				>
 			<?php
-				
-
-
-				$payPlan_array = getColArrayFromQuery($qry_select_payPlans, "PayPlan");
-				$payLevel_array = getColArrayFromQuery($qry_select_payLevels, "PayLevel");
-				$jobFamily_array = getKeyValArrayFromQuery($qry_select_jobFamilies, "ID", "JobFamily_long");
-
 				createCheckboxFilter("Pay Plan", "payPlan", $payPlan_array);
 				createCheckboxFilter("Pay Level", "payLevel", $payLevel_array);
 				createCheckboxFilter("Job Family", "jobFamily", $jobFamily_array);
@@ -143,33 +215,34 @@
 		</div>
 
 		<!-- Body Content -->
-		<div class="col-xs-10 c2">
+		<div class="col-md-10">
 			<table class="table matrix">
 				<thead>
 					<tr>
 						<th>Pay Level</th>
 					<?php
-						for ($i=0; $i<6; $i++) {
-					?>
-						<th>
-							<a href="">[Job_Family]</a>
-						</th>
-					<?php
+						foreach ($filtered_jobFamily_array as $id => $jobFamily) {
+							echo '<th>';
+								echo '<a href="">' . $jobFamily . '</a>';
+							echo '</th>';
 						}
 					?>
 					</tr>
 				</thead>
 
 				<tbody>
-				<?php
-					for ($row=10; $row <= 19; $row++) {
-						echo '<tr>';
-							echo '<td class="payLevel">' . $row . '</td>';
-						for ($col=0; $col<6; $col++) {
-							echo '<td class="cell">0</td>';
-						}
+			<?php
+				foreach ($filtered_payLevel_array as $payLevel) {
+					echo '<tr>';
+						echo '<td class="payLevel">' . $payLevel . '</td>';
+					foreach ($filtered_jobFamily_array as $id => $jobFamily) {
+						echo '<td class="cell">';
+							echo $lookup_table[$payLevel][$id - 1];
+						echo '</td>';
 					}
-				?>
+					echo '</tr>';
+				}
+			?>
 				</tbody>
 			</table>
 		</div>

@@ -15,9 +15,9 @@
     <!-- Linked stylesheets -->
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="../css/navbar-custom1.css" rel="stylesheet">
     <link href="../css/master.css" rel="stylesheet">
     <link href="./css/main.css" rel="stylesheet">
-    <link href="../css/navbar-custom1.css" rel="stylesheet">
 
     <!-- Included PHP Libraries -->
     <?php include $_SERVER['DOCUMENT_ROOT'] . '\bootstrap\libraries-php\stats.php'; ?>
