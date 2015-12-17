@@ -15,19 +15,28 @@
 		<ul class="filter-group list-unstyled">
 			<li>
 				<?php echo $filterName; ?>
-				<span class="expand-collapse glyphicon glyphicon-triangle-bottom"></span>
 				<ul>
 					<li>
-						<input type="checkbox" id="">
-						All
-						<span class="expand-collapse glyphicon glyphicon-triangle-bottom"></span>
-						<ul>
+						<input
+							type="checkbox"
+							id=""
+							class="checkbox-all"
+							checked="checked">
+
+						<span class="option-label">All</span>
+						<span class="expand-collapse glyphicon glyphicon-triangle-top"></span>
+						<ul class="options-list">
 					<?php
 						foreach ($options_array as $option) {
 					?>
 							<li>
 								<div class="filter-option">
-									<input type="checkbox" id="">
+									<input
+										type="checkbox"
+										id=""
+										class="option-checkbox"
+										checked="checked">
+
 									<span class="option-label">
 										<?php echo $option; ?>
 									</span>
@@ -129,8 +138,7 @@
 	$sql_sel_filt_jobFamilies = "
 		SELECT *
 		FROM job_families
-		WHERE ID > 0 AND	/* TESTING */
-			ID < 6			/* TESTING */
+		WHERE 1 = 1
 	";
 	$res_sel_filt_jobFamilies = $conn->query($sql_sel_filt_jobFamilies);
 
@@ -146,9 +154,7 @@
 			ON LPAD(a.JobCode, 4, '0') = LPAD(p.JobCode, 4, '0')
 			JOIN job_families AS j
 			ON j.JobFamily_short = p.JobFamily
-			WHERE p.PayLevel IS NOT NULL AND
-				p.PayLevel > 10 AND			/* TESTING */
-				p.PayLevel < 15				/* TESTING */
+			WHERE p.PayLevel IS NOT NULL
 			ORDER BY p.PayLevel, p.JobFamily) AS sub
 		GROUP BY sub.JobFamilyID, sub.PayLevel
 		ORDER BY sub.PayLevel, sub.JobFamilyID
@@ -190,7 +196,6 @@
 		$lookup_table[$row_i][$col_i] = $row['JobCodeCount'];
 	}
 	$res_sel_jobCodeCount->data_seek(0); // Move result set iterator back to start
-	dumpQuery($res_sel_jobCodeCount);
 ?>
 
 
@@ -204,6 +209,17 @@
 				role="form"
 				action=""
 				>
+
+				<div style="text-align:center;">
+					<button
+						type="button"
+						id="applyFilters-btn"
+						class="btn btn-default"
+						>
+						Apply Filters
+					</button>
+				</div>
+
 			<?php
 				createCheckboxFilter("Pay Plan", "payPlan", $payPlan_array);
 				createCheckboxFilter("Pay Level", "payLevel", $payLevel_array);
