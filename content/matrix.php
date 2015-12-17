@@ -3,6 +3,35 @@
 
 <?php
 	/**
+	 * Modify pay plan values in an array, so they are
+	 * in the descriptive format.
+	 * The parameter is passed by reference, so no return
+	 * value is necessary.
+	 * 
+	 * @param payPlan_array Array containing pay plan names
+	 * 		     as they appear in the table from which they
+	 *           were queried
+	 */
+	function convertPayPlans(&$payPlan_array) {
+		foreach ($payPlan_array as $i => $payPlan) {
+			switch ($payPlan) {
+				case 'usps':
+					$payPlan_array[$i] = 'USPS';
+					break;
+				case 'ap':
+					$payPlan_array[$i] = 'A&P';
+					break;
+				case 'exec':
+					$payPlan_array[$i] = 'Executive';
+					break;
+				case 'fac':
+					$payPlan_array[$i] = 'Faculty';
+					break;
+			}
+		}
+	}
+
+	/**
 	 * Creates filters for the matrix.
 	 * Must be called in a form.
 	 * 
@@ -17,13 +46,15 @@
 				<?php echo $filterName; ?>
 				<ul>
 					<li>
-						<input
-							type="checkbox"
-							id=""
-							class="checkbox-all"
-							checked="checked">
+						<span class="click-container">
+							<input
+								type="checkbox"
+								id=""
+								class="checkbox-all"
+								checked="checked">
 
-						<span class="option-label">All</span>
+							<span class="option-label">All</span>
+						</span>
 						<span class="expand-collapse glyphicon glyphicon-triangle-top"></span>
 						<ul class="options-list">
 					<?php
@@ -170,6 +201,13 @@
 	$payLevel_array = getColArrayFromQuery($res_sel_all_payLevels, "PayLevel");
 	$jobFamily_array = getKeyValArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long");
 	$filtered_jobFamily_array = getKeyValArrayFromQuery($res_sel_filt_jobFamilies, "ID", "JobFamily_long");
+
+	/*
+		Modify array values so they are the descriptive forms of
+		pay plans.
+		(pass by reference)
+	*/
+	convertPayPlans($payPlan_array);
 
 	/*
 		TODO: This should be populated with filter selections
