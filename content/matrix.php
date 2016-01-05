@@ -123,7 +123,7 @@
 		pay plans.
 		(pass by reference)
 	*/
-	convertPayPlans($payPlan_array, 'pay_levels');
+	convertPayPlans($payPlan_array, 'long');
 
 	/*
 		Create lookup table to populate matrix table

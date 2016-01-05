@@ -2,54 +2,32 @@
 	
 	/**
 	 * Modify pay plan values in an array, so they are
-	 * in the descriptive format.
+	 * in the specified format.
 	 * The parameter is passed by reference, so no return
 	 * value is necessary.
 	 * 
-	 * @param payPlan_array Array containing pay plan names
-	 * 		     as they appear in the table from which they
-	 *           were queried
+	 * @param payPlan_array  Array containing pay plan names
+	 *		as they appear in the table from which they
+	 *		were queried
+	 * @param format  The format to which the pay plans will
+	 *		be converted
 	 */
 	function convertPayPlans(&$payPlan_array, $format) {
 		foreach ($payPlan_array as $i => $payPlan) {
-
-			if ($format == 'pay_levels') {
-				switch ($payPlan) {
-					case 'usps':
-						$payPlan_array[$i] = 'USPS';
-						break;
-					case 'ap':
-						$payPlan_array[$i] = 'A&P';
-						break;
-					case 'exec':
-						$payPlan_array[$i] = 'EXC';
-						break;
-					case 'fac':
-						$payPlan_array[$i] = 'Faculty';
-						break;
-				}
-			}
-			elseif ($format == 'long') {
-				switch ($payPlan) {
-				case 'usps':
-					$payPlan_array[$i] = 'USPS';
-					break;
-				case 'ap':
-					$payPlan_array[$i] = 'A&ampP';
-					break;
-				case 'exec':
-					$payPlan_array[$i] = 'Executive';
-					break;
-				case 'fac':
-					$payPlan_array[$i] = 'Faculty';
-					break;
-				}
-			}
+			$payPlan_array[$i] = convertPayPlan($payPlan, $format);
 		}
 	}
 
+
 	/**
+	 *	Convert pay plan to a different format
 	 *
+	 * @param payPlan  String representing a pay plan
+	 * @param format  The format to which the pay plan
+	 *		will be converted
+	 * 
+	 * @return convertedPayPlan  A String representing the
+	 *		converted pay plan
 	 */
 	function convertPayPlan($payPlan, $format) {
 		$convertedPayPlan = ''; // Return value
@@ -95,10 +73,10 @@
 	 * Return an array containing the values from one specified column
 	 * of a query result object.
 	 *
-	 * @param qryResult Result object of a query
-	 * @param colName   Name of the column whose values you would like
-	 * @return col_array Array containing the values from the colName
-	 *					 column of the qryResult query object
+	 * @param qryResult  Result object of a query
+	 * @param colName    Name of the column whose values you would like
+	 * @return col_array  Array containing the values from the colName
+	 *		column of the qryResult query object
 	 */
 	function getColArrayFromQuery($qryResult, $colName) {
 		$col_array = array();
@@ -120,8 +98,8 @@
 	 * @param keyColName Name of the column to use as the key
 	 * @param valColName Name of the column to use as the val
 	 * @return keyVal_array Array containing the key-value pairs from the
-	 *						keyColName column and the valColName column
-	 *						of the qryresult query object
+	 *		keyColName column and the valColName column of the
+	 *		qryresult query object
 	 */
 	function getKeyValArrayFromQuery($qryResult, $keyColName, $valColName) {
 		$keyVal_array = array();
