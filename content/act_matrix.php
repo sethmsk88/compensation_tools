@@ -47,7 +47,7 @@
 
 		if ($category == "payPlan") {
 			$payPlan = $payPlan_array[$filterNum];
-			$where_payPlan .= " OR PayPlan = '" . $payPlan . "'";
+			$where_payPlan .= " OR PayPlan = '" . convertPayPlan($payPlan, 'pay_levels') . "'";
 		}
 		else if ($category == "payLevel") {
 			$payLevel = $payLevel_array[$filterNum];
@@ -56,17 +56,6 @@
 		else if ($category == "jobFamily") {
 			$where_jobFamily .= " OR ID = " . $filterNum;
 		}
-	}
-
-	/*
-		Get filtered pay plans
-	*/
-	$sql_sel_filt_payPlans = "
-		SELECT DISTINCT PayPlan
-		FROM class_specs
-		WHERE 1 = 0" . $where_payPlan;
-	if (!$res_sel_filt_payPlans = $conn->query($sql_sel_filt_payPlans)) {
-		echo "Query failed: (" . $conn->errno . ") " . $conn->error;
 	}
 
 	/*
@@ -91,8 +80,6 @@
 		echo "Query failed: (" . $conn->errno . ") " . $conn->error;
 	}
 
-	
-	$filtered_payPlan_array = getColArrayFromQuery($res_sel_filt_payPlans, "PayPlan");
 	$filtered_payLevel_array = getColArrayFromQuery($res_sel_filt_payLevels, "PayLevel");
 	$filtered_jobFamily_array = getKeyValArrayFromQuery($res_sel_filt_jobFamilies, "ID", "JobFamily_long");
 
@@ -102,14 +89,17 @@
 	*/
 	include "../queries/qry_sel_jobCodeCount.php";
 
-
 	/*
 		Create lookup table to populate matrix table
 	*/
-	$lookup_table = createLookupTable($filtered_payLevel_array, count($filtered_jobFamily_array), $res_sel_jobCodeCount);
+	$lookup_table = createLookupTable($filtered_payLevel_array,
+		count($filtered_jobFamily_array),
+		$res_sel_jobCodeCount);
 
 	/* Print new matrix to screen */
-	createMatrix($filtered_jobFamily_array, $filtered_payLevel_array, $lookup_table);
+	createMatrix($filtered_jobFamily_array,
+		$filtered_payLevel_array,
+		$lookup_table);
 
 	/* Close database connection */
 	mysqli_close($conn);

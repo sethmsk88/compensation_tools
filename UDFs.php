@@ -10,14 +10,32 @@
 	 * 		     as they appear in the table from which they
 	 *           were queried
 	 */
-	function convertPayPlans(&$payPlan_array) {
+	function convertPayPlans(&$payPlan_array, $format) {
 		foreach ($payPlan_array as $i => $payPlan) {
-			switch ($payPlan) {
+
+			if ($format == 'pay_levels') {
+				switch ($payPlan) {
+					case 'usps':
+						$payPlan_array[$i] = 'USPS';
+						break;
+					case 'ap':
+						$payPlan_array[$i] = 'A&P';
+						break;
+					case 'exec':
+						$payPlan_array[$i] = 'EXC';
+						break;
+					case 'fac':
+						$payPlan_array[$i] = 'Faculty';
+						break;
+				}
+			}
+			elseif ($format == 'long') {
+				switch ($payPlan) {
 				case 'usps':
 					$payPlan_array[$i] = 'USPS';
 					break;
 				case 'ap':
-					$payPlan_array[$i] = 'A&P';
+					$payPlan_array[$i] = 'A&ampP';
 					break;
 				case 'exec':
 					$payPlan_array[$i] = 'Executive';
@@ -25,8 +43,51 @@
 				case 'fac':
 					$payPlan_array[$i] = 'Faculty';
 					break;
+				}
 			}
 		}
+	}
+
+	/**
+	 *
+	 */
+	function convertPayPlan($payPlan, $format) {
+		$convertedPayPlan = ''; // Return value
+		
+		if ($format == 'pay_levels') {
+			switch ($payPlan) {
+				case 'usps':
+					$convertedPayPlan = 'USPS';
+					break;
+				case 'ap':
+					$convertedPayPlan = 'A&P';
+					break;
+				case 'exec':
+					$convertedPayPlan = 'EXC';
+					break;
+				case 'fac':
+					$convertedPayPlan = 'Faculty';
+					break;
+			}
+		}
+		else if ($format == 'long') {
+			switch ($payPlan) {
+				case 'usps':
+					$convertedPayPlan = 'USPS';
+					break;
+				case 'ap':
+					$convertedPayPlan = 'A&amp;P';
+					break;
+				case 'exec':
+					$convertedPayPlan = 'Executive';
+					break;
+				case 'fac':
+					$convertedPayPlan = 'Faculty';
+					break;
+			}
+		}
+
+		return $convertedPayPlan;
 	}
 
 
@@ -89,6 +150,7 @@
 
 		$lookup_table = array();
 
+		/* Create lookup table filled with zeros */
 		foreach ($payLevels as $payLevel) {
 			$lookup_table[$payLevel] = array();
 
@@ -104,7 +166,6 @@
 			$col_i = $row['JobFamilyID'] - 1;
 			$lookup_table[$row_i][$col_i] = $row['JobCodeCount'];
 		}
-		//$res_sel_jobCodeCount->data_seek(0); // Move result set iterator back to start
 
 		return $lookup_table;
 	}

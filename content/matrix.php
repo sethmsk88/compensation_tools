@@ -123,21 +123,14 @@
 		pay plans.
 		(pass by reference)
 	*/
-	convertPayPlans($payPlan_array);
-
-	/*
-		Default: Show all pay levels
-	*/
-	$filtered_payLevel_array = array(11,12,13,14,15,16,17,18);
+	convertPayPlans($payPlan_array, 'pay_levels');
 
 	/*
 		Create lookup table to populate matrix table
 	*/
-	$lookup_table = createLookupTable($payLevel_array, count($jobFamily_array), $res_sel_jobCodeCount);
-
-	/*echo '<code>';
-	var_dump($lookup_table);
-	echo '</code>';*/
+	$lookup_table = createLookupTable($payLevel_array,
+		count($jobFamily_array),
+		$res_sel_jobCodeCount);
 ?>
 
 
