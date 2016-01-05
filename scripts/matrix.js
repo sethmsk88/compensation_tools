@@ -103,5 +103,20 @@ $(document).ready(function() {
 				.prop('checked', false);
 		}
 	});
+
+	/* Event handler for "Apply Filters" button */
+	$('#applyFilters-btn').on('click', function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type: 'post',
+			url: './content/act_matrix.php',
+			data: $('#filters-form').serialize(),
+			success: function(response) {
+				$('#table-container').html(response);
+			}
+		});
+	})
+
 	
 });
