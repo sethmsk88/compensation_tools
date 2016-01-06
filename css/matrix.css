@@ -12,6 +12,7 @@
 	background-color: #65a25d;
 	padding-top: 1em;
 	height:100%;
+  min-width: 138px;
 }
 
 ul.list-unstyled ul{

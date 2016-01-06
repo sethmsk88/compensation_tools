@@ -158,36 +158,33 @@
 	 */
 	function createMatrix($jobFamilies, $payLevels, $lookup_table) {
 ?>
-		<!-- Body Content -->
-		<div id="table-container" class="col-md-10">
-			<table class="table matrix">
-				<thead>
-					<tr>
-						<th>Pay Level</th>
-					<?php
-						foreach ($jobFamilies as $id => $jobFamily) {
-							echo '<th>';
-								echo '<a href="">' . $jobFamily . '</a>';
-							echo '</th>';
-						}
-					?>
-					</tr>
-				</thead>
-
-				<tbody>
-			<?php
-				foreach ($payLevels as $payLevel) {
-					echo '<tr>';
-						echo '<td class="payLevel">' . $payLevel . '</td>';
+		<table class="table matrix">
+			<thead>
+				<tr>
+					<th>Pay Level</th>
+				<?php
 					foreach ($jobFamilies as $id => $jobFamily) {
-						echo '<td class="cell">';
-							echo $lookup_table[$payLevel][$id - 1];
-						echo '</td>';
+						echo '<th>';
+							echo '<a href="">' . $jobFamily . '</a>';
+						echo '</th>';
 					}
-					echo '</tr>';
+				?>
+				</tr>
+			</thead>
+
+			<tbody>
+		<?php
+			foreach ($payLevels as $payLevel) {
+				echo '<tr>';
+					echo '<td class="payLevel">' . $payLevel . '</td>';
+				foreach ($jobFamilies as $id => $jobFamily) {
+					echo '<td class="cell">';
+						echo $lookup_table[$payLevel][$id - 1];
+					echo '</td>';
 				}
-			?>
-				</tbody>
-			</table>
-		</div>
+				echo '</tr>';
+			}
+		?>
+			</tbody>
+		</table>
 <?php } ?>

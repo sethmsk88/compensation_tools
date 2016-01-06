@@ -138,7 +138,7 @@
 	<div class="row-fluid">
 
 		<!-- Sidebar content -->
-		<div class="sidebar col-md-2">
+		<div class="sidebar col-xs-2">
 			<form
 				name="filters-form"
 				id="filters-form"
@@ -165,7 +165,9 @@
 
 			</form>
 		</div>
-		
+
+		<!-- Body Content -->
+		<div id="table-container" class="col-xs-10">
 		<?php
 			/*
 				Create matrix
@@ -173,6 +175,7 @@
 			*/
 			createMatrix($jobFamily_array, $payLevel_array, $lookup_table);
 		?>
+		</div>
 
 
 
