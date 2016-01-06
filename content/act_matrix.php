@@ -34,6 +34,18 @@
 	$payLevel_array = getColArrayFromQuery($res_sel_all_payLevels, "PayLevel");
 
 	/*
+		Get All Job Families
+	*/
+	$sql_sel_all_jobFamilies = "
+		SELECT *
+		FROM job_families
+	";
+	if (!$res_sel_all_jobFamilies = $conn->query($sql_sel_all_jobFamilies)) {
+		echo "Query failed: (" . $conn->errno . ") " . $conn->error;
+	}
+	$jobFamily_all_array = getKeyValArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long");
+
+	/*
 		Create WHERE clauses based on which filters are selected.
 	*/
 	$where_payLevel = "";
@@ -93,7 +105,7 @@
 		Create lookup table to populate matrix table
 	*/
 	$lookup_table = createLookupTable($filtered_payLevel_array,
-		count($filtered_jobFamily_array),
+		count($jobFamily_all_array),
 		$res_sel_jobCodeCount);
 
 	/* Print new matrix to screen */

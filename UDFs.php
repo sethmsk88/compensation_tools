@@ -163,7 +163,7 @@
 				<tr>
 					<th>Pay Level</th>
 				<?php
-					foreach ($jobFamilies as $id => $jobFamily) {
+					foreach ($jobFamilies as $i => $jobFamily) {
 						echo '<th>';
 							echo '<a href="">' . $jobFamily . '</a>';
 						echo '</th>';
@@ -177,9 +177,9 @@
 			foreach ($payLevels as $payLevel) {
 				echo '<tr>';
 					echo '<td class="payLevel">' . $payLevel . '</td>';
-				foreach ($jobFamilies as $id => $jobFamily) {
+				foreach ($jobFamilies as $i => $jobFamily) {
 					echo '<td class="cell">';
-						echo $lookup_table[$payLevel][$id - 1];
+						echo $lookup_table[$payLevel][$i-1];
 					echo '</td>';
 				}
 				echo '</tr>';

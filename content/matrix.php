@@ -8,11 +8,12 @@
 	 * Creates filters for the matrix.
 	 * Must be called in a form.
 	 * 
-	 * @param filterName Name of the category by which you are filtering
-	 * @param filterID   ID prefix to be used for each checkbox
-	 * @param options    Array of strings representing filter options
+	 * @param filterName  Name of the category by which you are filtering
+	 * @param filterID  ID prefix to be used for each checkbox
+	 * @param options_array  Indexed array of strings
+	 * @param options_keyVal_array  2-dim array of IDs and strings
 	 */
-	function createCheckboxFilter($filterName, $filterID, $options_array) {
+	function createCheckboxFilter($filterName, $filterID, $options_array, $options_keyVal_array = NULL) {
 ?>
 		<ul class="filter-group list-unstyled">
 			<li>
@@ -31,23 +32,46 @@
 						<span class="expand-collapse glyphicon glyphicon-triangle-top"></span>
 						<ul class="options-list">
 					<?php
-						foreach ($options_array as $i => $option) {
+						if (!is_null($options_array)) {
+							foreach ($options_array as $i => $option) {
 					?>
-							<li>
-								<div class="filter-option">
-									<input
-										type="checkbox"
-										name="<?php echo $filterID . '_'. $i; ?>"
-										id="<?php echo $filterID . '_'. $i; ?>"
-										class="option-checkbox"
-										checked="checked">
+								<li>
+									<div class="filter-option">
+										<input
+											type="checkbox"
+											name="<?php echo $filterID . '_'. $i; ?>"
+											id="<?php echo $filterID . '_'. $i; ?>"
+											class="option-checkbox"
+											checked="checked">
 
-									<span class="option-label">
-										<?php echo $option; ?>
-									</span>
-								</div>
-							</li>
+										<span class="option-label">
+											<?php echo $option; ?>
+										</span>
+									</div>
+								</li>
 					<?php
+							}
+						}
+						
+						if (!is_null($options_keyVal_array)) {
+							foreach ($options_keyVal_array as $key => $option) {
+					?>
+								<li>
+									<div class="filter-option">
+										<input
+											type="checkbox"
+											name="<?php echo $filterID . '_'. $key; ?>"
+											id="<?php echo $filterID . '_'. $key; ?>"
+											class="option-checkbox"
+											checked="checked">
+
+										<span class="option-label">
+											<?php echo $option; ?>
+										</span>
+									</div>
+								</li>
+					<?php	
+							}
 						}
 					?>
 						</ul>
@@ -116,7 +140,6 @@
 	$payPlan_array = getColArrayFromQuery($res_sel_all_payPlans, "PayPlan");
 	$payLevel_array = getColArrayFromQuery($res_sel_all_payLevels, "PayLevel");
 	$jobFamily_array = getKeyValArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long");
-	$filtered_jobFamily_array = getKeyValArrayFromQuery($res_sel_filt_jobFamilies, "ID", "JobFamily_long");
 
 	/*
 		Modify array values so they are the descriptive forms of
@@ -157,9 +180,9 @@
 				</div>
 
 			<?php
-				createCheckboxFilter("Pay Plan", "payPlan", $payPlan_array);
-				createCheckboxFilter("Pay Level", "payLevel", $payLevel_array);
-				createCheckboxFilter("Job Family", "jobFamily", $jobFamily_array);
+				createCheckboxFilter("Pay Plan", "payPlan", $payPlan_array, null);
+				createCheckboxFilter("Pay Level", "payLevel", $payLevel_array, null);
+				createCheckboxFilter("Job Family", "jobFamily", null, $jobFamily_array);
 			?>
 
 
