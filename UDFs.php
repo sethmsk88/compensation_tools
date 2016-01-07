@@ -180,6 +180,10 @@
 				foreach ($jobFamilies as $i => $jobFamily) {
 					echo '<td class="cell">';
 						echo $lookup_table[$payLevel][$i-1];
+
+						/* The following spans hold information about the cell, to be used when the cell is clicked */
+						echo '<span class="cell-payLevel" style="display:none;">' . $payLevel . '</span>';
+						echo '<span class="cell-jobFamily" style="display:none;">' . $i . '</span>';
 					echo '</td>';
 				}
 				echo '</tr>';
@@ -187,6 +191,19 @@
 		?>
 			</tbody>
 		</table>
+
+		<script>
+			/* Click event handler for cells in matrix */
+			var eventHandler_cellClick = function() {
+				var payLevel = $(this).find('.cell-payLevel').text();
+				var jobFamily = $(this).find('.cell-jobFamily').text();
+
+				window.location.href = "?page=jobs_list&pl=" + payLevel + "&jf=" + jobFamily;
+			};
+
+			/* Assign event handler to cell class */
+			$('.cell').click(eventHandler_cellClick);
+		</script>
 <?php
 	}
 
@@ -265,5 +282,3 @@
 		return $convertedFLSA;
 	}
 ?>
-
-

@@ -1,5 +1,5 @@
 <link href="./css/matrix.css" rel="stylesheet">
-<script src="./scripts/matrix.js"></script>
+<script src="./scripts/jobs_list.js"></script>
 
 <?php
 	include "./UDFs.php"; // include shared functions
@@ -10,14 +10,16 @@
 		echo "Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error;
 	}
 
-	/* DUMMY TEST DATA */
-	$_POST["payLevel"] = 10;
-	$_POST["jobFamily_ID"] = 2; // Admin Business Services
+	/* Define query params */
+	if (isset($_GET["pl"]))
+		$param_int_PayLevel = $_GET["pl"];
+	else
+		$param_int_PayLevel = null;
 
-	// Select Class Specs that meet the criteria posted to the page
-	// Criteria (PayLevel, JobFamily, DeptID(NOT YET IMPLEMENTED))
-	$param_str_PayLevel = $_POST["payLevel"];
-	$param_int_JobFamily_ID = $_POST["jobFamily_ID"];
+	if (isset($_GET["jf"]))
+		$param_int_JobFamily_ID = $_GET["jf"];
+	else
+		$param_int_JobFamily_ID = null;
 
 	$select_classSpecs = "
 		SELECT DISTINCT p.JobCode, p.JobTitle, j.JobFamily_long
@@ -34,7 +36,7 @@
 		echo 'Prepare failed: (' . $conn->errno . ') ' . $conn->error;
 	}
 	else if (!$stmt->bind_param("ii",
-		$param_str_PayLevel,
+		$param_int_PayLevel,
 		$param_int_JobFamily_ID)) {
 		echo 'Binding params failed: (' . $stmt->errno . ') ' . $stmt->error;
 	}
@@ -43,9 +45,6 @@
 	}
 	$select_classSpecs_result = $stmt->get_result();
 	$stmt->close();
-
-	echo 'Num Rows: ' . $select_classSpecs_result->num_rows . '<br />'; // TESTING
-	dumpQuery($select_classSpecs_result); // TESTING
 ?>
 
 <div class="container">
@@ -59,7 +58,7 @@
 					/* Rewind result set, b/c the above line will move the result set pointer */
 					$select_classSpecs_result->data_seek(0);
 
-					echo  '<b>Pay Level:</b> ' . $_POST['payLevel'];
+					echo  '<b>Pay Level:</b> ' . $_GET['pl'];
 				?>
 				</caption>
 				<thead>
@@ -72,7 +71,7 @@
 				<?php
 					while ($row = $select_classSpecs_result->fetch_assoc()) {
 				?>
-						<tr>
+						<tr class="job">
 							<td><?php echo $row['JobCode']; ?></td>
 							<td><?php echo $row['JobTitle']; ?></td>
 						</tr>
@@ -84,9 +83,6 @@
 		</div>
 	</div>
 </div>
-
-
-
 
 
 <?php

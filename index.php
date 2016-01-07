@@ -1,7 +1,7 @@
 <?php
     $APP_appName = "Compensation/Classification Tools";
     $APP_appPath = "http://" . $_SERVER['HTTP_HOST'] . "bootstrap/apps/class_specs/";
-    $APP_homepage = "JFPL_matrix";
+    $APP_homepage = "matrix";
 ?>
 
 <!DOCTYPE html>
@@ -76,8 +76,8 @@
             <div id="navbarCollapse" class="collapse navbar-collapse">
                 <!-- Nav links -->
                 <ul class="nav navbar-nav">
-                    <li id="homepage-link">
-                        <?php echo '<a id="navLink-homepage" href="./?page=' . $APP_homepage . '">Matrix</a>'; ?>
+                    <li id="matrix-link">
+                        <?php echo '<a id="navLink-matrix" href="./?page=matrix">Matrix</a>'; ?>
                     </li>
                 </ul>
             </div>
