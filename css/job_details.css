@@ -1,0 +1,34 @@
+/* Modified Bootstrap styles */
+.container{
+	font-size: 16px;
+}
+
+.row{
+	padding-bottom: 1em;
+}
+
+.table{
+	margin-bottom: 0;
+}
+
+/* My styles */
+.myLabel{
+	padding-right: 10px;
+	font-weight: bold;
+}
+
+#otherReq-table{
+	width: auto;
+}
+
+#otherReq-table > tbody > tr > td:first-child{
+	padding-right: 1em;
+}
+
+.box{
+	border: 1px solid #bababa;
+	padding: .5em;
+	margin-top: 2px;
+}
+
+
