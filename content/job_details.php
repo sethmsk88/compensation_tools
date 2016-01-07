@@ -12,7 +12,10 @@
 	}
 
 	/* Get class spec */
-	$param_str_JobCode = "4252"; // DUMMY DATA for testing
+	if (isset($_GET['jc']))
+		$param_str_JobCode = $_GET['jc'];
+	else
+		$param_str_JobCode = ""; // Default
 
 	$select_classSpec_sql = "
 		SELECT c.*, p.PayLevel, j.JobFamily_long
