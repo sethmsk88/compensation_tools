@@ -85,6 +85,11 @@ table > tbody > tr > td{
   border-right: 2px solid #999;
 }
 
+td.cell-notClickable{
+  background-color: #888 !important;
+  color: #666;
+}
+
 .matrix > thead > tr > th.jobFamily > a{
   color: inherit;
 }
@@ -121,7 +126,7 @@ table > tbody > tr > td{
 }
 */
 
-.matrix > tbody > tr > td.cell:hover{
+.matrix > tbody > tr > td.cell-clickable:hover{
   background-color: #FBD8B3;
 }
 
@@ -154,10 +159,6 @@ table.jobs > tbody > tr:hover{
   background-color: #FBD8B3;
 }
 
-table.matrix > tbody > tr > td.dark{
-  background-color: #888 !important;
-  color: #666;
-}
 
 /*
 div.popover-content > button.btn-popNav:first-child{
@@ -176,3 +177,4 @@ table.jobs > tbody > tr > td > a{
   text-indent: -.75em;
   padding-left: .75em;
 }
+

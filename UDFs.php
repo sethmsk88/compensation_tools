@@ -178,7 +178,15 @@
 				echo '<tr>';
 					echo '<td class="payLevel">' . $payLevel . '</td>';
 				foreach ($jobFamilies as $i => $jobFamily) {
-					echo '<td class="cell">';
+					$jobCodeCount = $lookup_table[$payLevel][$i-1];
+
+					if ($jobCodeCount > 0) {
+						echo '<td class="cell cell-clickable">';
+					}
+					else {
+						echo '<td class="cell cell-notClickable">';
+					}
+
 						echo $lookup_table[$payLevel][$i-1];
 
 						/* The following spans hold information about the cell, to be used when the cell is clicked */
@@ -202,7 +210,7 @@
 			};
 
 			/* Assign event handler to cell class */
-			$('.cell').click(eventHandler_cellClick);
+			$('.cell-clickable').click(eventHandler_cellClick);
 		</script>
 <?php
 	}
