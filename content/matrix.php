@@ -30,6 +30,7 @@
 							<span class="option-label">All</span>
 						</span>
 						<span class="expand-collapse glyphicon glyphicon-triangle-top"></span>
+						
 						<ul class="options-list">
 					<?php
 						if (!is_null($options_array)) {

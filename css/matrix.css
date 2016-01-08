@@ -45,6 +45,16 @@ ul.list-unstyled ul{
 	cursor: pointer;
 }
 
+.filter-group > li > ul > li > ul > li{
+  padding-left: 5px;
+}
+
+.filter-group > li > ul > li > ul > li:hover{
+  background-color: #b2d0ae;
+}
+
+
+
 
 
 
