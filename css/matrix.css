@@ -188,3 +188,7 @@ table.jobs > tbody > tr > td > a{
   padding-left: .75em;
 }
 
+.ui-tooltip-content{
+
+  white-space: pre-wrap;
+}

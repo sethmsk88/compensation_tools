@@ -89,9 +89,7 @@
 		echo "Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error;
 	}
 
-	/*
-		Get All Pay Plans
-	*/
+	/* Get All Pay Plans */
 	$sql_sel_all_payPlans = "
 		SELECT DISTINCT PayPlan
 		FROM class_specs
@@ -99,9 +97,7 @@
 	";
 	$res_sel_all_payPlans = $conn->query($sql_sel_all_payPlans);
 
-	/*
-		Get All Pay Levels
-	*/
+	/* Get All Pay Levels */
 	$sql_sel_all_payLevels = "
 		SELECT DISTINCT PayLevel
 		FROM pay_levels
@@ -110,18 +106,21 @@
 	";
 	$res_sel_all_payLevels = $conn->query($sql_sel_all_payLevels);
 
-	/*
-		Get All Job Families
-	*/
+	/* Get PayLevel descriptions */
+	$sel_all_payLevelDescr_sql = "
+		SELECT PayLevel, Descr
+		FROM pay_levels_descr
+	";
+	$sel_all_payLevelDescr_result = $conn->query($sel_all_payLevelDescr_sql);
+
+	/* Get All Job Families */
 	$sql_sel_all_jobFamilies = "
 		SELECT *
 		FROM job_families
 	";
 	$res_sel_all_jobFamilies = $conn->query($sql_sel_all_jobFamilies);
 
-	/*
-		Get Filtered Job Families
-	*/
+	/* Get Filtered Job Families */
 	$sql_sel_filt_jobFamilies = "
 		SELECT *
 		FROM job_families
@@ -135,11 +134,10 @@
 	*/
 	include "./queries/qry_sel_jobCodeCount.php";
 
-	/*
-		Create arrays from query results
-	*/
+	/* Create arrays from query results */
 	$payPlan_array = getColArrayFromQuery($res_sel_all_payPlans, "PayPlan");
 	$payLevel_array = getColArrayFromQuery($res_sel_all_payLevels, "PayLevel");
+	$payLevelDescr_array = getKeyValArrayFromQuery($sel_all_payLevelDescr_result, 'PayLevel', 'Descr');
 	$jobFamily_array = getKeyValArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long");
 
 	/*
@@ -149,9 +147,7 @@
 	*/
 	convertPayPlans($payPlan_array, 'long');
 
-	/*
-		Create lookup table to populate matrix table
-	*/
+	/* Create lookup table to populate matrix table */
 	$lookup_table = createLookupTable($payLevel_array,
 		count($jobFamily_array),
 		$res_sel_jobCodeCount);
@@ -197,7 +193,7 @@
 				Create matrix
 				Default: Show all Job Families and Pay Levels
 			*/
-			createMatrix($jobFamily_array, $payLevel_array, $lookup_table);
+			createMatrix($jobFamily_array, $payLevel_array, $payLevelDescr_array, $lookup_table);
 		?>
 		</div>
 

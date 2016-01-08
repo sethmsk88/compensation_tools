@@ -154,9 +154,10 @@
 	 *	
 	 * @param jobFamilies  Array containing job families
 	 * @param payLevels	   Array containing pay levels
+	 * @param payLevelDescrs  Array containing pay level descriptions
 	 * @param lookup_table 2-dim array used to lookup matrix values
 	 */
-	function createMatrix($jobFamilies, $payLevels, $lookup_table) {
+	function createMatrix($jobFamilies, $payLevels, $payLevelDescrs, $lookup_table) {
 ?>
 		<table class="table matrix">
 			<thead>
@@ -175,8 +176,19 @@
 			<tbody>
 		<?php
 			foreach ($payLevels as $payLevel) {
-				echo '<tr>';
-					echo '<td class="payLevel">' . $payLevel . '</td>';
+		?>
+				<tr>
+					<td class="payLevel">
+						<a
+							data-toggle="tooltip"
+							data-placement="top"
+							title="Pay Level <?php echo $payLevel . '
+							' . $payLevelDescrs[$payLevel]; ?>">
+
+							<?php echo $payLevel; ?>
+						</a>
+					</td>
+		<?php
 				foreach ($jobFamilies as $i => $jobFamily) {
 					$jobCodeCount = $lookup_table[$payLevel][$i-1];
 
@@ -211,6 +223,9 @@
 
 			/* Assign event handler to cell class */
 			$('.cell-clickable').click(eventHandler_cellClick);
+
+			/* Activate all tooltips */
+			$('[data-toggle = "tooltip"').tooltip();
 		</script>
 <?php
 	}

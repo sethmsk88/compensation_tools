@@ -10,9 +10,7 @@
 		echo "Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error;
 	}
 
-	/*
-		Get All Pay Plans
-	*/
+	/* Get All Pay Plans */
 	$sql_sel_all_payPlans = "
 		SELECT DISTINCT PayPlan
 		FROM class_specs
@@ -21,9 +19,7 @@
 	$res_sel_all_payPlans = $conn->query($sql_sel_all_payPlans);
 	$payPlan_array = getColArrayFromQuery($res_sel_all_payPlans, "PayPlan");
 
-	/*
-		Get All Pay Levels
-	*/
+	/* Get All Pay Levels */
 	$sql_sel_all_payLevels = "
 		SELECT DISTINCT PayLevel
 		FROM pay_levels
@@ -33,9 +29,15 @@
 	$res_sel_all_payLevels = $conn->query($sql_sel_all_payLevels);
 	$payLevel_array = getColArrayFromQuery($res_sel_all_payLevels, "PayLevel");
 
-	/*
-		Get All Job Families
-	*/
+	/* Get PayLevel descriptions */
+	$sel_all_payLevelDescr_sql = "
+		SELECT PayLevel, Descr
+		FROM pay_levels_descr
+	";
+	$sel_all_payLevelDescr_result = $conn->query($sel_all_payLevelDescr_sql);
+	$payLevelDescr_array = getKeyValArrayFromQuery($sel_all_payLevelDescr_result, 'PayLevel', 'Descr');
+
+	/* Get All Job Families */
 	$sql_sel_all_jobFamilies = "
 		SELECT *
 		FROM job_families
@@ -45,9 +47,7 @@
 	}
 	$jobFamily_all_array = getKeyValArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long");
 
-	/*
-		Create WHERE clauses based on which filters are selected.
-	*/
+	/* Create WHERE clauses based on which filters are selected */
 	$where_payLevel = "";
 	$where_payPlan = "";
 	$where_jobFamily = "";
@@ -111,6 +111,7 @@
 	/* Print new matrix to screen */
 	createMatrix($filtered_jobFamily_array,
 		$filtered_payLevel_array,
+		$payLevelDescr_array,
 		$lookup_table);
 
 	/* Close database connection */
