@@ -125,7 +125,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<?php echo $classSpec_row['PositionDescr']; ?>
+							<?php echo stripslashes($classSpec_row['PositionDescr']); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -144,7 +144,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<?php echo $classSpec_row['EducationExp']; ?>
+							<?php echo stripslashes($classSpec_row['EducationExp']); ?>
 						</td>
 					</tr>
 				</tbody>
@@ -162,7 +162,7 @@
 				</thead>
 				<tbody>
 					<?php
-						// Create list item for each competency
+						// Create cell for each competency
 						while($row = $select_competencies_result->fetch_assoc()){
 							echo '<tr>';
 							echo '<td>' . stripslashes($row['Descr']) . '</td>';
