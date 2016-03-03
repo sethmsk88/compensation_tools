@@ -114,7 +114,23 @@ $(document).ready(function() {
 			data: $('#filters-form').serialize(),
 			success: function(response) {
 				$('#table-container').html(response);
+
+				$('[data-toggle="popover"]').popover();
+				attachPopoverEventHandlerToParent();
 			}
 		});
-	})
+	});
+	attachPopoverEventHandlerToParent();
 });
+
+/* Trigger popover when parent element is hovered over */
+function attachPopoverEventHandlerToParent() {
+	/* Trigger popover when parent element is hovered over */
+	$('.popover-parent').hover(function(e) {
+		$child = $(this).find('a');
+
+		// Prevent too much recursion error
+		if (!$(e.target).is($child))
+			$child.trigger(e.type);
+	});
+}

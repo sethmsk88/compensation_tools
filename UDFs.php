@@ -116,6 +116,32 @@
 
 
 	/**
+	 * Return a 2-dim array containing key-value pairs from two specified
+	 * columns of a query result object, where the value is an array
+	 * containing two values
+	 * 
+	 * @param qryResult  Result object of a query
+	 * @param keyColName Name of the column to use as the key
+	 * @param valColName Name of the column to use as the val
+	 * @return keyVal_array Array containing the key-value pairs from the
+	 *		keyColName column and the valColName column of the
+	 *		qryresult query object
+	 */
+	function getKeyVal2DArrayFromQuery($qryResult, $keyColName, $val1ColName, $val2ColName) {
+		$keyVal_2Darray = array();
+
+		while ($row = $qryResult->fetch_assoc()) {
+			$key = $row[$keyColName];
+			$val = array($row[$val1ColName], $row[$val2ColName]);
+			$keyVal_2Darray[$key] = $val;
+		}
+		$qryResult->data_seek(0); // Move result set iterator back to start
+
+		return $keyVal_2Darray;
+	}
+
+
+	/**
 	 * Create a lookup table for the (pay level x job family) values
 	 *
 	 * @param payLevels             Array containing pay levels
@@ -152,21 +178,41 @@
 	/**
 	 * Create a table representing the Job Family/Pay Level matrix
 	 *	
-	 * @param jobFamilies  Array containing job families
+	 * @param jobFamilies  2-dim array containing job families (ID => array(name, descr))
 	 * @param payLevels	   Array containing pay levels
+	 * @param payLevelDescrs  Array containing pay level descriptions
 	 * @param lookup_table 2-dim array used to lookup matrix values
 	 */
-	function createMatrix($jobFamilies, $payLevels, $lookup_table) {
+	function createMatrix($jobFamilies, $payLevels, $payLevelDescrs, $lookup_table) {
 ?>
 		<table class="table matrix">
 			<thead>
 				<tr>
 					<th>Pay Level</th>
 				<?php
+					$popover_i = 0;
 					foreach ($jobFamilies as $i => $jobFamily) {
-						echo '<th>';
-							echo '<a href="">' . $jobFamily . '</a>';
-						echo '</th>';
+				?>
+						<th class="popover-parent">
+							<a
+								href="#"
+								data-toggle="popover"
+								tabindex="<?=$popover_i?>"
+								data-trigger="hover"
+								title="<?=$jobFamily[0]?>"
+								data-content="
+									<?php
+									if (strlen($jobFamily[1]))
+										echo $jobFamily[1];
+									else
+										echo 'No description';
+									?>"
+								data-placement="bottom">
+								<?=$jobFamily[0]?>
+							</a>
+						</th>
+				<?php
+						$popover_i++;
 					}
 				?>
 				</tr>
@@ -174,9 +220,24 @@
 
 			<tbody>
 		<?php
+			$popover_i = 0;
 			foreach ($payLevels as $payLevel) {
-				echo '<tr>';
-					echo '<td class="payLevel">' . $payLevel . '</td>';
+		?>
+				<tr>
+					<td class="payLevel popover-parent">
+						<a 
+							href="#"
+							data-toggle="popover"
+							tabindex="<?=$popover_i?>"
+							data-trigger="hover"
+							title="Pay Level <?=$payLevel?>"
+							data-content="<?=$payLevelDescrs[$payLevel]?>">
+							<?=$payLevel?>
+						</a>
+					</td>
+		<?php
+				$popover_i++;
+
 				foreach ($jobFamilies as $i => $jobFamily) {
 					$jobCodeCount = $lookup_table[$payLevel][$i-1];
 
@@ -211,6 +272,9 @@
 
 			/* Assign event handler to cell class */
 			$('.cell-clickable').click(eventHandler_cellClick);
+
+			/* Activate all tooltips */
+			$('[data-toggle = "tooltip"').tooltip();
 		</script>
 <?php
 	}
