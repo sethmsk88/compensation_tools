@@ -93,7 +93,7 @@
 	}
 
 	$filtered_payLevel_array = getColArrayFromQuery($res_sel_filt_payLevels, "PayLevel");
-	$filtered_jobFamily_array = getKeyValArrayFromQuery($res_sel_filt_jobFamilies, "ID", "JobFamily_long");
+	$filtered_jobFamily_array = getKeyVal2DArrayFromQuery($res_sel_filt_jobFamilies, "ID", "JobFamily_long", "Descr");
 
 	/*
 		Get the number of distinct job codes for each (PayLevel x JobFamily) pair

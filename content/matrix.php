@@ -46,7 +46,7 @@
 											checked="checked">
 
 										<span class="option-label">
-											<?php echo $option; ?>
+											<?=$option?>
 										</span>
 									</div>
 								</li>
@@ -67,7 +67,12 @@
 											checked="checked">
 
 										<span class="option-label">
-											<?php echo $option; ?>
+											<?php
+												if (is_array($option))
+													echo $option[0];
+												else
+													echo $option;
+											?>
 										</span>
 									</div>
 								</li>
@@ -138,7 +143,7 @@
 	$payPlan_array = getColArrayFromQuery($res_sel_all_payPlans, "PayPlan");
 	$payLevel_array = getColArrayFromQuery($res_sel_all_payLevels, "PayLevel");
 	$payLevelDescr_array = getKeyValArrayFromQuery($sel_all_payLevelDescr_result, 'PayLevel', 'Descr');
-	$jobFamily_array = getKeyValArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long");
+	$jobFamily_array = getKeyVal2DArrayFromQuery($res_sel_all_jobFamilies, "ID", "JobFamily_long", "Descr");
 
 	/*
 		Modify array values so they are the descriptive forms of
