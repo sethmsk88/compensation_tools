@@ -1,0 +1,11 @@
+html, body{
+	height: 100%;
+}
+
+nav{
+	margin-bottom: 0 !important;
+}
+
+.footer{
+	padding:70px 0;
+}
